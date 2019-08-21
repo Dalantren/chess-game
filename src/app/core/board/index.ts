@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
 import { Coords } from '../coords';
 import { Cell } from '../cell';
-import { Figure } from '../figure';
+import { Player } from '../player';
 
-@Injectable({
-    providedIn: 'root'
-})
 export class Board {
 
-    public width: number;
-    public height: number;
+    public width = 8;
+    public height = 8;
 
-    public entry: Array<Array<Cell>> = [];
+
+    private board = [];
+
+    public players: Array<Player> = [];
 
     public get size() {
         return {
@@ -20,7 +19,11 @@ export class Board {
         };
     }
 
-    public set size(value: {width: number, height?: number}) {
+    public get entry() {
+        return this.board || [];
+    }
+
+    public set entry(value: {width: number, height?: number}) {
         if (typeof value.height === 'undefined') {
             value.height = value.width;
         }
@@ -28,9 +31,9 @@ export class Board {
         this.height = value.height;
 
         for (let row = 0; row < this.width; row++) {
-            this.entry[row] = new Array();
+            this.board[row] = new Array();
             for (let col = 0; col < this.height; col++) {
-                this.entry[row].push(new Cell(new Coords(col, row), new Figure()));
+                this.board[row].push(new Cell(new Coords(col, row)));
             }
         }
     }

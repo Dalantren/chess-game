@@ -2,7 +2,8 @@ import { Coords } from '../coords';
 
 export declare class FigureType {
   public coords: Coords;
-  public icon?: SVGElement;
+  public icon?: string;
+  public availibleMoves: Array<Coords>;
   canMove?(coords: Coords): boolean;
-  availibleMoves?(coords: Coords): Array<Coords>;
+  getMoves?(coords: Coords): Array<Coords>;
 }

@@ -1,14 +1,14 @@
 import { Coords } from '../coords';
+import { Cell } from '../cell';
 
 export class Figure {
-  public coords: Coords;
+  public cell: Cell;
   public icon: string;
-  public player: number;
   public availibleMoves: Array<Coords>;
-  public canMove(coords: Coords) {
+  public canMove(cell: Cell) {
     return true;
   }
-  public getMoves(coords: Coords): Array<Coords> {
+  public getMoves(cell: Cell): Array<Coords> {
       return [];
   }
 }

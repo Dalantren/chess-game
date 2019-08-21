@@ -1,12 +1,14 @@
 import { Coords } from '../coords';
-import { Figure } from '../figure';
 
 export class Cell {
-    constructor(public coords: Coords, public figure: Figure) {
-    }
+    constructor(private coords: Coords) { }
 
     get coordinates() {
-        return [ this.coords.x, this.coords.y ];
+        return { x: this.coords.x, y: this.coords.y };
+    }
+
+    set coordinates({x, y}) {
+        this.coords = new Coords(x, y);
     }
 
     isBlack(): boolean {

@@ -1,10 +1,10 @@
-export declare class CoordsType {
-    private xLet: string;
-    private yLet: string;
+export declare interface CoordsType {
+    xLet: string;
+    yLet: string;
 
-    private xNum: number;
-    private yNum: number;
+    xNum: number;
+    yNum: number;
 
-    public x: string | number;
-    public y: string | number;
+    x: string | number;
+    y: string | number;
 }
