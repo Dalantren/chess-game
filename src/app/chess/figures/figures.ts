@@ -1,0 +1,2 @@
+import { Bishop } from './bishop';
+
