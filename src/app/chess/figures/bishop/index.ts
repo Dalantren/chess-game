@@ -5,14 +5,13 @@ import { Player } from 'src/app/core/player';
 
 export class Bishop extends Figure {
 
-    constructor(private board: ChessBoardService, cell: Cell, player: Player) {
+    constructor(player: Player) {
         super();
-        this.cell = cell;
         this.icon = `&#9815;`;
         this.availibleMoves = this.getMoves();
     }
 
-    getMoves(cell: Cell = this.cell) {
+    getMoves() {
         const result = [];
         // for (let i = 1; i < Math.max(this.board.size.width, this.board.size.height); i++) {
         //     if ((cell.coords.x + i) <= this.board.width && (cell.coords.y + i) <= this.board.height) {

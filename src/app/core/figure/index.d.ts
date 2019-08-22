@@ -1,9 +1,8 @@
-import { Coords } from '../coords';
+import { Cell } from '../cell';
 
 export declare class FigureType {
-  public coords: Coords;
   public icon?: string;
-  public availibleMoves: Array<Coords>;
-  canMove?(coords: Coords): boolean;
-  getMoves?(coords: Coords): Array<Coords>;
+  public availibleMoves: Array<Cell>;
+  canMove?(coords: Cell): boolean;
+  getMoves?(coords: Cell): Array<Cell>;
 }

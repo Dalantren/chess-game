@@ -1,4 +1,3 @@
-import { Coords } from '../coords';
 import { Cell } from '../cell';
 import { Player } from '../player';
 
@@ -19,11 +18,7 @@ export class Board {
         };
     }
 
-    public get entry() {
-        return this.board || [];
-    }
-
-    public set entry(value: {width: number, height?: number}) {
+    public set size(value: {width: number, height?: number}) {
         if (typeof value.height === 'undefined') {
             value.height = value.width;
         }
@@ -33,8 +28,12 @@ export class Board {
         for (let row = 0; row < this.width; row++) {
             this.board[row] = new Array();
             for (let col = 0; col < this.height; col++) {
-                this.board[row].push(new Cell(new Coords(col, row)));
+                this.board[row].push(new Cell(row, col));
             }
         }
+    }
+
+    public get entry() {
+        return this.board;
     }
 }

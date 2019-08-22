@@ -1,9 +1,13 @@
-import { Coords } from '../coords';
 import { Figure } from '../figure';
 
 export declare class CellType {
-    public coords: Coords;
-    public coordinates: Array<[number, number]>;
-    public figure: Figure;
-    public isBlack(): boolean;
+    xLet: string;
+    yLet: string;
+
+    xNum: number;
+    yNum: number;
+
+    x: string | number;
+    y: string | number;
+    isBlack(): boolean;
 }
