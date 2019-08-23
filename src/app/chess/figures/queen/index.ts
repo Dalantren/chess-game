@@ -5,10 +5,9 @@ import { Player } from 'src/app/core/player';
 
 export class Queen extends Figure {
 
-    constructor(player: Player) {
-        super();
-        this.icon = `&#9813;`;
-        this.availibleMoves = this.getMoves();
+    constructor(public player: Player, public board: ChessBoardService, public cell: Cell) {
+        super(player, board, cell);
+        this.icon = this.color === `white` ? `&#9813;` : `&#9819;`;
     }
 
     getMoves() {

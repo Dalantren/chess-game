@@ -5,10 +5,9 @@ import { Cell } from 'src/app/core/cell';
 
 export class Pawn extends Figure {
 
-    constructor(player: Player) {
-        super();
-        this.icon = `&#9817;`;
-        this.availibleMoves = this.getMoves();
+    constructor(public player: Player, public board: ChessBoardService, public cell: Cell) {
+        super(player, board, cell);
+        this.icon = this.color === `white` ? `&#9817;` : `&#9823;`;
     }
 
     getMoves() {

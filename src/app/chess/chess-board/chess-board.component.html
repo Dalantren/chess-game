@@ -1,11 +1,20 @@
-<div class="field">
+<div class="field" cdkDropListGroup>
     <div class="field__row" *ngFor="let row of board.entry">
         <div    *ngFor="let cell of row"
-                innerHtml="{{ cell.figure ? cell.figure.icon : '' }}"
                 [ngClass]="[
                     'field__cell',
                     cell.isBlack() ? 'field__cell--black' : 'field__cell--white'
-                ]">
+                ]"                cdkDropList
+                [cdkDropListData]="cell"
+                (cdkDropListDropped)="drop($event)"
+
+                >
+                <div    class="field__figure figure"
+
+                        innerHtml="{{ cell.figure ? cell.figure.icon : '' }}"
+                        cdkDrag
+                >
+                </div>
         </div>
     </div>
 </div>

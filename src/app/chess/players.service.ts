@@ -14,8 +14,8 @@ export class PlayersService {
 
     public players: Array<Player> = [];
 
-    public add() {
-        const player = new Player(this.players.length + 1);
+    public add(color: 'black' | 'white') {
+        const player = new Player(this.players.length + 1, color);
         this.players.push(player);
         return player;
     }

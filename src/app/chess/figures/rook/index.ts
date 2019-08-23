@@ -5,10 +5,9 @@ import { Player } from 'src/app/core/player';
 
 export class Rook extends Figure {
 
-    constructor(player: Player) {
-        super();
-        this.icon = `&#9814;`;
-        this.availibleMoves = this.getMoves();
+    constructor(public player: Player, public board: ChessBoardService, public cell: Cell) {
+        super(player, board, cell);
+        this.icon = this.color === `white` ? `&#9814;` : `&#9820;`;
     }
 
     getMoves() {
