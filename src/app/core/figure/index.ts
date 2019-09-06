@@ -4,7 +4,7 @@ import { Board } from '../board';
 
 export class Figure {
 
-  constructor(public player: Player, protected board: Board, protected cell: Cell) {
+  constructor(public player: Player, protected board: Board) {
     this.color = this.player.color;
     this.availibleMoves = this.getMoves();
   }

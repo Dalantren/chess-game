@@ -25,10 +25,10 @@ export class Board {
         this.width = value.width;
         this.height = value.height;
 
-        for (let row = 0; row < this.width; row++) {
+        for (let row = 0; row < this.height; row++) {
             this.board[row] = new Array();
-            for (let col = 0; col < this.height; col++) {
-                this.board[row].push(new Cell(row, col));
+            for (let col = 0; col < this.width; col++) {
+                this.board[row].push(new Cell(col, row));
             }
         }
     }

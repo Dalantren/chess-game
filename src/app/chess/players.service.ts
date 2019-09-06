@@ -19,11 +19,4 @@ export class PlayersService {
         this.players.push(player);
         return player;
     }
-
-    public initFigures(player: Player, color: 'black' | 'white') {
-        player.figures = [];
-        player.figures.push(
-            // new Bishop
-        );
-    }
 }

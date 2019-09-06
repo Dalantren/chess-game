@@ -8,12 +8,14 @@ export class Cell {
     private xNum: number;
     private yNum: number;
 
+    public availible = false;
+
     constructor(x: number | string, y: number | string) {
         this.x = x;
         this.y = y;
     }
 
-    public figure: Figure;
+    public figure: Figure = null;
 
     get x() {
         return this.xNum;

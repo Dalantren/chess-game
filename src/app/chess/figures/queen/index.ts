@@ -5,13 +5,97 @@ import { Player } from 'src/app/core/player';
 
 export class Queen extends Figure {
 
-    constructor(public player: Player, public board: ChessBoardService, public cell: Cell) {
-        super(player, board, cell);
+    constructor(public player: Player, protected board: ChessBoardService) {
+        super(player, board);
         this.icon = this.color === `white` ? `&#9813;` : `&#9819;`;
     }
 
-    getMoves() {
-        const result = [];
-        return result;
+    setAvailibleMoves(figCell: Cell): void {
+        let x = figCell.x + 1;
+        let y = figCell.y + 1;
+        while (x < this.board.width && y < this.board.height) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            x++; y++;
+        }
+
+        x = figCell.x - 1;
+        y = figCell.y + 1;
+        while (x >= 0 && y < this.board.height) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            x--; y++;
+        }
+
+        x = figCell.x + 1;
+        y = figCell.y - 1;
+        while (x < this.board.width && y >= 0) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            x++; y--;
+        }
+
+        x = figCell.x - 1;
+        y = figCell.y - 1;
+        while (y >= 0 && x >= 0) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            x--; y--;
+        }
+
+        x = figCell.x + 1;
+        y = figCell.y;
+        while (x < this.board.width) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            x++;
+        }
+
+        x = figCell.x - 1;
+        while (x >= 0) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            x--;
+        }
+
+        x = figCell.x;
+        y = figCell.y + 1;
+        while (y < this.board.height) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            y++;
+        }
+
+        x = figCell.x;
+        y = figCell.y - 1;
+        while (y >= 0) {
+            if (this.board.entry[y][x].figure) {
+                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                break;
+            }
+            this.board.entry[y][x].availible = true;
+            y--;
+        }
     }
 }
