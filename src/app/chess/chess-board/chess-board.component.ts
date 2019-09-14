@@ -48,33 +48,23 @@ export class ChessBoardComponent implements OnInit, OnChanges {
 
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log(changes);
-        console.log(this.board);
-    }
-
-    canDrop(event) {
-        console.log(event);
-        console.log(typeof event);
     }
 
     getAvailibleMoves(event) {
-        console.log(`drag start`);
-        
         const cell = event.source.dropContainer.data;
         const { figure } = event.source.dropContainer.data;
         figure.setAvailibleMoves(cell);
-        console.log(cell);
-        console.log(figure);
-        console.log(`-------------`);
     }
 
     drop(event: CdkDragDrop<Cell>) {
-        console.log(event);
-        console.log(this.board);
         if (event.previousContainer !== event.container && event.container.data.availible) {
-            const prevFigure = event.previousContainer.data.figure;
-            event.previousContainer.data.figure = event.container.data.figure;
-            event.container.data.figure = prevFigure;
+            const figureFrom = event.previousContainer.data.figure;
+            const figureTo = event.container.data.figure;
+            if (figureTo && figureFrom.player.id !== figureTo.player.id) {
+                figureTo.player.defeatedFigures.push(figureTo);
+            }
+            event.container.data.figure = figureFrom;
+            event.previousContainer.data.figure = null;
         }
 
         this.board.entry.map(row => {

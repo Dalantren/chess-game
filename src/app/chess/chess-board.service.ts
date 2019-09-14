@@ -15,6 +15,5 @@ export class ChessBoardService extends Board {
 
     public initBoard(width = 8, height = 8) {
         this.size = { width, height };
-        console.log(this.entry);
     }
 }
