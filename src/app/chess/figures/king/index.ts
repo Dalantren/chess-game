@@ -7,7 +7,7 @@ export class King extends Figure {
 
     constructor(public player: Player, protected board: ChessBoardService) {
         super(player, board);
-        this.icon = this.color === `white` ? `&#9812;` : `	&#9818;`;
+        this.icon = this.color === `white` ? `&#9812;` : `&#9818;`;
     }
 
     setAvailibleMoves(figCell: Cell): void {

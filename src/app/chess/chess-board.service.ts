@@ -16,4 +16,12 @@ export class ChessBoardService extends Board {
     public initBoard(width = 8, height = 8) {
         this.size = { width, height };
     }
+
+    public clearAvailibles(): void {
+        this.entry.map(row => {
+            row.map((cell: Cell) => {
+                cell.availible = false;
+            });
+        });
+    }
 }

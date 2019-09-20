@@ -1,13 +1,16 @@
 @import '../../../assets/scss/style';
 
+$cell-size: 70px;
+$coord-border-size: 30px;
+
 :host {
     display: flex;
+    justify-content: space-around;
 }
 
 .field {
     border: 10px solid #999;
     display: flex;
-    margin: 0 auto;
     flex-direction: column;
 
     &__row {
@@ -15,13 +18,32 @@
         flex: 1 0 auto;
     }
 
-    &__cell {
-        @include square(70px);
-        flex: 1 0 auto;
+    &__coord-row {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 50px;
+
+        & .field__coord-cell {
+            height: $coord-border-size;
+        }
+    }
+
+    &__coord-cell {
+        @include square($coord-border-size);
+        @include flex-center;
+        background-color: #aaa;
+
+        &--wide {
+            width: $cell-size;
+        }
+
+        &--tall {
+            height: $cell-size;
+        }
+    }
+
+    &__cell {
+        @include square($cell-size);
+        @include flex-center;
+        flex: 1 0 auto;
         box-sizing: border-box;
 
         &--black {
@@ -36,8 +58,23 @@
             border: 5px solid green;
         }
     }
+
+    &__figure {
+        cursor: grab;
+    }
 }
 
 .figure {
-    cursor: pointer;
+    font-size: 50px;
+}
+
+.felled-figures {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__single {
+    margin: 5px 0;
+    }
 }

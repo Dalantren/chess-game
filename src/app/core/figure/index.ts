@@ -1,4 +1,3 @@
-import { Cell } from '../cell';
 import { Player } from '../player';
 import { Board } from '../board';
 
@@ -6,16 +5,12 @@ export class Figure {
 
   constructor(public player: Player, protected board: Board) {
     this.color = this.player.color;
-    this.availibleMoves = this.getMoves();
+    this.id = player.figures.length;
+    player.figures.push(this);
   }
 
+  public id: number;
   public icon: string;
   public color: 'black' | 'white';
-  public availibleMoves: Array<Cell>;
-  public canMove(cell: Cell) {
-    return true;
-  }
-  public getMoves(): Array<Cell> {
-      return [];
-  }
+  public firstMove = true;
 }

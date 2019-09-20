@@ -55,25 +55,4 @@ export class Rook extends Figure {
             y--;
         }
     }
-
-    checkLine(cell1: Cell, cell2: Cell): void {
-        // if (cell1.x === cell2.x) {
-        //     const x = cell1.x;
-        //     for (let y = Math.min(cell1.y, cell2.y) + 1; y < Math.max(cell1.y, cell2.y); y++) {
-        //         console.log(`${x}, ${y}`);
-        //         console.log(this.board.entry[x][y].figure);
-        //         if (this.board.entry[x][y].figure) {
-        //             return false;
-        //         }
-        //     }
-        // } else if (cell1.y === cell2.y) {
-        //     const y = cell1.y;
-        //     for (let x = Math.min(cell1.x, cell2.x) + 1; x < Math.max(cell1.x, cell2.x); x++) {
-        //         if (this.board.entry[x][y].figure) {
-        //             return false;
-        //         }
-        //     }
-        // }
-        // return false;
-    }
 }

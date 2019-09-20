@@ -19,4 +19,8 @@ export class PlayersService {
         this.players.push(player);
         return player;
     }
+
+    public get(index: number): Player {
+        return this.players.filter(player => player.id === index)[0];
+    }
 }

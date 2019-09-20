@@ -1,24 +1,47 @@
+<div class="felled-figures">
+    <h3>Player One felled figures</h3>
+    <div class="felled-figures__single figure" *ngFor="let figure of playerOne.felledFigures" innerHTML="{{ figure.icon }}"></div>
+</div>
 <div class="field" cdkDropListGroup>
+    <div class="field__coord-row">
+        <div class="field__coord-cell"></div>
+        <div class="field__coord-cell field__coord-cell--wide" *ngFor="let cell of board.entry[0]"> {{ cell.xLet }}</div>
+        <div class="field__coord-cell"></div>
+    </div>
     <div class="field__row"
         *ngFor="let row of board.entry; index as rowId"
         >
-        <div    *ngFor="let cell of row"
-                [ngClass]="[
-                    'field__cell',
-                    cell.isBlack() ? 'field__cell--black' : 'field__cell--white',
-                    cell.availible ? 'field__cell--availible' : ''
-                ]"
-                cdkDropList
-                [cdkDropListData]="cell"
-                (cdkDropListDropped)="drop($event)"
-                >
-                <div    class="field__figure figure"
-                        innerHtml="{{ cell.figure ? cell.figure.icon : '' }}"
-                        [cdkDragData]="cell.figure"
-                        (cdkDragStarted)="getAvailibleMoves($event)"
-                        cdkDrag
-                >
-                </div>
+        <div class="field__coord-cell field__coord-cell--tall">
+            {{ rowId + 1 }}
+        </div>
+        <div
+            *ngFor="let cell of row"
+            [ngClass]="[
+                'field__cell',
+                cell.isBlack() ? 'field__cell--black' : 'field__cell--white',
+                cell.availible ? 'field__cell--availible' : ''
+            ]"
+            cdkDropList
+            [cdkDropListData]="cell"
+            (cdkDropListDropped)="drop($event)">
+            <div    class="field__figure figure"
+                    innerHtml="{{ cell.figure ? cell.figure.icon : '' }}"
+                    [cdkDragData]="cell.figure"
+                    (cdkDragStarted)="getAvailibleMoves($event)"
+                    cdkDrag>
+            </div>
+        </div>
+        <div class="field__coord-cell field__coord-cell--tall">
+            {{ rowId + 1 }}
         </div>
     </div>
+    <div class="field__coord-row">
+        <div class="field__coord-cell"></div>
+        <div class="field__coord-cell field__coord-cell--wide" *ngFor="let cell of board.entry[0]"> {{ cell.xLet }}</div>
+        <div class="field__coord-cell"></div>
+    </div>
+</div>
+<div class="felled-figures">
+    <h3>Player Two felled figures</h3>
+    <div class="felled-figures__single figure" *ngFor="let figure of playerTwo.felledFigures" innerHTML="{{ figure.icon }}"></div>
 </div>
