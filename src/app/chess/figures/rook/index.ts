@@ -1,57 +1,57 @@
 import { Figure } from '../../../core/figure';
 import { Cell } from '../../../core/cell';
-import { ChessBoardService } from '../../chess-board.service';
+import { Board } from '../../../core/board';
 import { Player } from 'src/app/core/player';
 
 export class Rook extends Figure {
 
-    constructor(public player: Player, protected board: ChessBoardService) {
-        super(player, board);
+    constructor(public player: Player) {
+        super(player);
         this.icon = this.color === `white` ? `&#9814;` : `&#9820;`;
     }
 
-    setAvailibleMoves(figCell: Cell): void {
+    setAvailibleMoves(cell: Cell, board: Board): void {
 
-        let x = figCell.x + 1;
-        let y = figCell.y;
-        while (x < this.board.width) {
-            if (this.board.entry[y][x].figure) {
-                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+        let x = cell.x + 1;
+        let y = cell.y;
+        while (x < board.width) {
+            if (board.entry[y][x].figure) {
+                board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
                 break;
             }
-            this.board.entry[y][x].availible = true;
+            board.entry[y][x].availible = true;
             x++;
         }
 
-        x = figCell.x - 1;
+        x = cell.x - 1;
         while (x >= 0) {
-            if (this.board.entry[y][x].figure) {
-                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+            if (board.entry[y][x].figure) {
+                board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
                 break;
             }
-            this.board.entry[y][x].availible = true;
+            board.entry[y][x].availible = true;
             x--;
         }
 
-        x = figCell.x;
-        y = figCell.y + 1;
-        while (y < this.board.height) {
-            if (this.board.entry[y][x].figure) {
-                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+        x = cell.x;
+        y = cell.y + 1;
+        while (y < board.height) {
+            if (board.entry[y][x].figure) {
+                board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
                 break;
             }
-            this.board.entry[y][x].availible = true;
+            board.entry[y][x].availible = true;
             y++;
         }
 
-        x = figCell.x;
-        y = figCell.y - 1;
+        x = cell.x;
+        y = cell.y - 1;
         while (y >= 0) {
-            if (this.board.entry[y][x].figure) {
-                this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+            if (board.entry[y][x].figure) {
+                board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
                 break;
             }
-            this.board.entry[y][x].availible = true;
+            board.entry[y][x].availible = true;
             y--;
         }
     }

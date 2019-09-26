@@ -1,31 +1,31 @@
 import { Figure } from '../../../core/figure';
-import { ChessBoardService } from '../../chess-board.service';
-import { Player } from 'src/app/core/player';
-import { Cell } from 'src/app/core/cell';
+import { Player } from '../../../core/player';
+import { Cell } from '../../../core/cell';
+import { Board } from '../../../core/board';
 
 export class Pawn extends Figure {
 
-    constructor(public player: Player, protected board: ChessBoardService) {
-        super(player, board);
+    constructor(public player: Player) {
+        super(player);
         this.icon = this.color === `white` ? `&#9817;` : `&#9823;`;
     }
 
-    setAvailibleMoves(figCell: Cell): void {
+    setAvailibleMoves(cell: Cell, board: Board): void {
         const offset = this.firstMove ? 2 : 1;
         const direction = this.color === 'white' ? -1 : 1;
         for (let i = 1; i <= offset; i++) {
             for (let j = -1; j <= 1; j++) {
-                const x = figCell.x + j;
-                const y = figCell.y + i * direction;
-                if (x < 0 || y < 0 || x >= this.board.width || y >= this.board.height) {
+                const x = cell.x + j;
+                const y = cell.y + i * direction;
+                if (x < 0 || y < 0 || x >= board.width || y >= board.height) {
                     continue;
                 }
-                if (this.board.entry[y][x].figure && Math.abs(j) === 1 && Math.abs(i) === 1) {
-                    this.board.entry[y][x].availible = this.board.entry[y][x].figure.player.id !== this.player.id;
+                if (board.entry[y][x].figure && Math.abs(j) === 1 && Math.abs(i) === 1) {
+                    board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
                     continue;
                 }
-                if (j === 0 && !this.board.entry[y][x].figure) {
-                    this.board.entry[y][x].availible = true;
+                if (j === 0 && !board.entry[y][x].figure) {
+                    board.entry[y][x].availible = true;
                 }
             }
         }

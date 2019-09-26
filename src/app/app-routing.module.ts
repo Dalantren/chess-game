@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { ChessBoardComponent } from './chess/chess-board/chess-board.component';
+import { ChessComponent } from './chess/chess.component';
 
 
 const routes: Routes = [
   {
     path: 'chess',
-    component: ChessBoardComponent,
+    component: ChessComponent,
   }
 ];
 

@@ -27,7 +27,7 @@
             <div    class="field__figure figure"
                     innerHtml="{{ cell.figure ? cell.figure.icon : '' }}"
                     [cdkDragData]="cell.figure"
-                    (cdkDragStarted)="getAvailibleMoves($event)"
+                    (cdkDragStarted)="setAvailibleMoves($event)"
                     cdkDrag>
             </div>
         </div>

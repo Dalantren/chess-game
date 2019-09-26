@@ -6,7 +6,6 @@ export class Board {
     public width = 8;
     public height = 8;
 
-
     private board = [];
 
     public players: Array<Player> = [];

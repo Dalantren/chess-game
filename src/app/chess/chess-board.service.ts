@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Board } from '../core/board';
-import { PlayersService } from './players.service';
-import { FiguresService } from './figures.service';
 import { Cell } from '../core/cell';
 
 @Injectable({
@@ -9,7 +7,7 @@ import { Cell } from '../core/cell';
 })
 export class ChessBoardService extends Board {
 
-    constructor(private playersService: PlayersService, private figuresService: FiguresService) {
+    constructor() {
         super();
     }
 

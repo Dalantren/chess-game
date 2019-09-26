@@ -18,5 +18,4 @@ export class Player {
     public endMove(): void {
         this.active = false;
     }
-    // public action(figure: Figure, to: Coords): void;
 }
