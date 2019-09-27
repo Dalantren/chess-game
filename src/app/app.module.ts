@@ -7,15 +7,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoggerComponent } from './chess/logger/logger.component';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material';
+import { HomePageComponent } from './home-page/home-page.component';
+
+const serverConfig: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomePageComponent
   ],
   imports: [
+    SocketIoModule.forRoot(serverConfig),
     BrowserModule,
     AppRoutingModule,
-    ChessModule
+    ChessModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

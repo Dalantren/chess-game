@@ -85,9 +85,7 @@ export class ChessBoardComponent implements OnInit, OnChanges {
             figureFrom.firstMove = false;
 
             figureFrom.player.endMove();
-            this.logger.log(`Player ${figureFrom.player.id} move ${figureFrom.name}
-                            from ${event.previousContainer.data.xLetter}${event.previousContainer.data.y + 1}
-                            to ${event.container.data.xLetter}${event.container.data.y + 1}`);
+            this.logger.logMove(event.previousContainer.data, event.container.data, figureFrom);
             this.playersService.getNextPlayer(figureFrom.player).startMove();
         }
         this.board.clearAvailibles();
