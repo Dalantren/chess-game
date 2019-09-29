@@ -10,7 +10,7 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'chess',
+    path: 'chess/:roomId',
     component: ChessComponent,
   }
 ];

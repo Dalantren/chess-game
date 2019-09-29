@@ -9,20 +9,33 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
 
+    private roomsCount = 0;
+    private fullRooms: Array<string> = [];
+    private emptyRooms: Array<string> = [];
+
   constructor(private socketService: WebSocketService, private router: Router) { }
 
   ngOnInit(): void {
-    this.socketService.listen('test event').subscribe(data => console.log(data));
+    this.socketService.listen('start a new game').subscribe(({ roomId }) => {
+      this.router.navigateByUrl(`/chess/${roomId}`);
+    });
 
-    this.socketService.listen('start a new game').subscribe(data => {
-      this.router.navigateByUrl('/chess');
+    this.socketService.listen('rooms availible').subscribe( roomsInfo => {
+        this.roomsCount = roomsInfo.roomsCount;
+        this.fullRooms = roomsInfo.fullRooms;
+        this.emptyRooms = roomsInfo.emptyRooms;
+    });
+
+    this.socketService.listen('new room').subscribe(({ roomsInfo, roomId }) => {
+
     });
   }
 
-  enterQueue(): void {
-    console.log(`sending data...`);
-    this.socketService.emit('enter queue', { id : Math.random().toString().slice(0, 5)});
-    this.socketService.listen('list').subscribe(data => console.log(data));
+  joinQueue(): void {
+    this.socketService.emit('join queue', { id : +Math.random().toString().slice(2, 5) });
   }
 
+  public createRoom(): void {
+      this.socketService.emit('create room', {});
+  }
 }

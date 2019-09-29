@@ -1,61 +1,35 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragStart } from '@angular/cdk/drag-drop';
 import { ChessBoardService } from '../chess-board.service';
 import { PlayersService } from '../players.service';
 import { Cell } from './../../core/cell';
-import { King, Queen, Bishop, Pawn, Knight, Rook } from './../figures/figures';
-import { Player } from 'src/app/core/player';
 import { LoggerService } from '../logger.service';
+import { WebSocketService } from 'src/app/web-socket.service';
 
 @Component({
     selector: 'chess-board',
     templateUrl: './chess-board.component.html',
     styleUrls: ['./chess-board.component.scss']
 })
-export class ChessBoardComponent implements OnInit, OnChanges {
-
-    private playerOne: Player;
-    private playerTwo: Player;
+export class ChessBoardComponent implements OnInit, OnChanges, AfterViewInit {
 
     constructor(
         private board: ChessBoardService,
         private playersService: PlayersService,
-        private logger: LoggerService
+        private logger: LoggerService,
+        private socket: WebSocketService
     ) {
         this.board.initBoard();
     }
 
     ngOnInit() {
-
-        this.playerOne = this.playersService.add('white');
-        this.playerTwo = this.playersService.add('black');
-
-        this.board.entry[7][0].figure = new Rook(this.playerOne);
-        this.board.entry[7][1].figure = new Knight(this.playerOne);
-        this.board.entry[7][2].figure = new Bishop(this.playerOne);
-        this.board.entry[7][3].figure = new King(this.playerOne);
-        this.board.entry[7][4].figure = new Queen(this.playerOne);
-        this.board.entry[7][5].figure = new Bishop(this.playerOne);
-        this.board.entry[7][6].figure = new Knight(this.playerOne);
-        this.board.entry[7][7].figure = new Rook(this.playerOne);
-        this.board.entry[6].map((cell: Cell) => {
-            cell.figure = new Pawn(this.playerOne);
+        this.socket.listen('add players').subscribe(playersID => {
+            playersID.map((id: number) => this.playersService.add(id));
         });
+    }
 
-
-        this.board.entry[0][0].figure = new Rook(this.playerTwo);
-        this.board.entry[0][1].figure = new Knight(this.playerTwo);
-        this.board.entry[0][2].figure = new Bishop(this.playerTwo);
-        this.board.entry[0][3].figure = new King(this.playerTwo);
-        this.board.entry[0][4].figure = new Queen(this.playerTwo);
-        this.board.entry[0][5].figure = new Bishop(this.playerTwo);
-        this.board.entry[0][6].figure = new Knight(this.playerTwo);
-        this.board.entry[0][7].figure = new Rook(this.playerTwo);
-        this.board.entry[1].map((cell: Cell) => {
-            cell.figure = new Pawn(this.playerTwo);
-        });
-
-        this.playerOne.startMove();
+    ngAfterViewInit(): void {
+        this.playersService.players[0].startMove();
     }
 
 
