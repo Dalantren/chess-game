@@ -28,17 +28,12 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  joinQueue(): void {
-    this.socketService.emit('join queue', { id : +Math.random().toString().slice(2, 5) });
-  }
-
   public joinRoom(roomId: string): void {
     console.log(roomId);
     this.socketService.emit('join room', { roomId });
   }
 
   public createRoom(): void {
-    console.log(`1111`);
       this.socketService.emit('create room', {});
   }
 }

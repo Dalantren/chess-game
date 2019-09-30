@@ -28,22 +28,29 @@ io.on('connection', socket => {
     socket.on(`join room`, ({ roomId }) => {
         const room = rooms.free.filter((room, i) => {
             if (room.id === roomId) {
-                socket.join(room.id);
                 room.players.push(socket.id);
                 rooms.free.splice(i, 1);
                 rooms.full.push(room);
-                return room;
+                return true;
             }
         })[0];
-        const roomsInfo = sendRoomsInfo();
+        if (!room) {
+            return;
+        }
+        socket.join(room.id);
+        sendRoomsInfo();
         const { players } = room;
-        console.log(rooms);
-        socket.to(room.id).emit('start game', { roomsInfo, roomId: room.id });
-        socket.broadcast.emit('add players', { isFirstTurn: true, players });
+        io.to(room.id).emit('start game', { roomId: room.id });
+        socket.to(room.id).broadcast.emit('add players', { isFirstTurn: true, players });
         socket.emit('add players', { isFirstTurn: false, players });
     });
 
-    socket.on('send move', move => socket.broadcast.emit('recieve move', move));
+    socket.on('send move', ({from, to, roomId}) => socket.to(roomId).broadcast.emit('recieve move', {from, to}));
+
+    socket.on('send board', ({roomId, board}) => {
+        const room = rooms.full.filter(room => room.id === roomId)[0];
+        room.board = board;
+    });
 
     socket.on('disconnecting', () => {
         const userRooms = Object.keys(socket.rooms).splice(1);
@@ -62,22 +69,6 @@ io.on('connection', socket => {
         });
         sendRoomsInfo();
     });
-
-    socket.on('join queue', data => {
-        queue.push({ id : data.id, socket });
-        if (queue.length >= 2) {
-            const roomId = randomStr();
-            activeRooms.push(roomId);
-            const players = queue.splice(0, 2);
-            players.map(({ socket }) => {
-                socket.join(roomId)
-            });
-            io.to(roomId)
-                .emit('start a new game', { roomId: roomId })
-                .emit('add players', [players[0].id, players[1].id]);
-        }
-    });
-    //socket.on('')
 });
 
 const randomStr = (length = 15) => {

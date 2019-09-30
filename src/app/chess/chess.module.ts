@@ -22,7 +22,6 @@ import { LoggerService } from './logger.service';
   ],
   providers: [
     PlayersService,
-    WebSocketService,
     ChessBoardService,
     LoggerService
   ],
