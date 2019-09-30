@@ -13,22 +13,29 @@ export class PlayersService {
 
     public players: Array<Player> = [];
 
-    public add(id?: number) {
-        id = id || this.players.length + 1;
-        const color = this.players.length % 2 ? `white` : `black`;
+    public me: Player;
+
+    public add(id?: string) {
+        id = id || (this.players.length + 1).toString();
+        const color = this.players.length % 2 ? `black` : `white`;
         const player = new Player(id, color);
         this.setFigures(player);
         this.players.push(player);
-        console.log(this.players);
         return player;
     }
 
-    public get(index: number): Player {
+    public get(index: string): Player {
         return this.players.filter(player => player.id === index)[0];
     }
 
-    public getNextPlayer(player: Player): Player {
-        return this.get(player.id + 1 > this.players.length ? 1 : (player.id + 1));
+    public getNextPlayer(currentPlayer: Player): Player {
+        let currentIndex = 0;
+        this.players.map((player, i) => {
+            if (player.id === currentPlayer.id) {
+                currentIndex = i;
+            }
+        });
+        return this.players[currentIndex + 1] ? this.players[currentIndex + 1] : this.players[0];
     }
 
     private setFigures(player: Player) {

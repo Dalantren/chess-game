@@ -35,4 +35,18 @@ export class Board {
     public get entry() {
         return this.board;
     }
+
+    public cell(coords: {x: number, y: number}): Cell {
+        return this.entry[coords.y][coords.x] || null;
+    }
+
+    public changeFigures(from: Cell, to: Cell): void {
+        if (to.figure && from.figure.player.id !== to.figure.player.id) {
+            to.figure.player.felledFigures.push(to.figure);
+            to.figure.player.figures = to.figure.player.figures.filter(figure => to.figure.id !== figure.id);
+        }
+        from.figure.firstMove = false;
+        to.figure = from.figure;
+        from.figure = null;
+    }
 }

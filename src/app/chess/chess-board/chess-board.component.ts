@@ -1,39 +1,61 @@
-import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragStart } from '@angular/cdk/drag-drop';
+import { Component, OnInit } from '@angular/core';
+import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
+
+import { Cell } from './../../core/cell';
+
 import { ChessBoardService } from '../chess-board.service';
 import { PlayersService } from '../players.service';
-import { Cell } from './../../core/cell';
 import { LoggerService } from '../logger.service';
-import { WebSocketService } from 'src/app/web-socket.service';
+import { WebSocketService } from './../../web-socket.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'chess-board',
     templateUrl: './chess-board.component.html',
-    styleUrls: ['./chess-board.component.scss']
+    styleUrls: ['./chess-board.component.scss'],
+    providers: [ ChessBoardService, PlayersService, LoggerService ]
 })
-export class ChessBoardComponent implements OnInit, OnChanges, AfterViewInit {
+export class ChessBoardComponent implements OnInit {
 
     constructor(
         private board: ChessBoardService,
         private playersService: PlayersService,
         private logger: LoggerService,
-        private socket: WebSocketService
+        private socket: WebSocketService,
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.board.initBoard();
+        let roomId = '';
+        this.route.url.subscribe(url => roomId = url[1].path);
+
+        // this.socket.listen(`rooms availible`).subscribe(roomsInfo => {
+        //     const room = roomsInfo.full.concat(roomsInfo.free).filter(room => roomId === room.id)[0];
+        //     if (!room) {
+        //         this.router.navigateByUrl('/');
+        //     }
+        // });
     }
 
     ngOnInit() {
-        this.socket.listen('add players').subscribe(playersID => {
-            playersID.map((id: number) => this.playersService.add(id));
+        this.socket.listen('add players').subscribe(({ isFirstTurn, players }) => {
+            players.map((socketId: string) => this.playersService.add(socketId));
+            if (isFirstTurn) {
+                this.playersService.me = this.playersService.players[0];
+                this.playersService.me.startMove();
+            } else {
+                this.playersService.me = this.playersService.players[1];
+            }
         });
-    }
 
-    ngAfterViewInit(): void {
-        this.playersService.players[0].startMove();
-    }
-
-
-    ngOnChanges(changes: SimpleChanges) {
+        this.socket.listen('recieve move').subscribe( ({ from, to }) => {
+            const cellFrom = this.board.cell(from);
+            const cellTo = this.board.cell(to);
+            cellTo.availible = true;
+            if (this.drop(cellFrom, cellTo)) {
+                this.playersService.me.startMove();
+            }
+        });
     }
 
     setAvailibleMoves(event: CdkDragStart) {
@@ -45,23 +67,23 @@ export class ChessBoardComponent implements OnInit, OnChanges, AfterViewInit {
         figure.setAvailibleMoves(cell, this.board);
     }
 
-    drop(event: CdkDragDrop<Cell>) {
-        if (event.previousContainer !== event.container && event.container.data.availible) {
-            const figureFrom = event.previousContainer.data.figure;
-            const figureTo = event.container.data.figure;
-            if (figureTo && figureFrom.player.id !== figureTo.player.id) {
-                figureTo.player.felledFigures.push(figureTo);
-                figureTo.player.figures = figureTo.player.figures.filter(figure => figureTo.id !== figure.id);
-            }
-            event.container.data.figure = figureFrom;
-            event.previousContainer.data.figure = null;
+    makeMove(event: CdkDragDrop<Cell>) {
+        const from: Cell = event.previousContainer.data;
+        const to: Cell = event.container.data;
+        if (this.drop(from, to)) {
+            this.playersService.me.endMove();
+            this.socket.emit('send move', { from: from.coords, to: to.coords });
+        }
+    }
 
-            figureFrom.firstMove = false;
-
-            figureFrom.player.endMove();
-            this.logger.logMove(event.previousContainer.data, event.container.data, figureFrom);
-            this.playersService.getNextPlayer(figureFrom.player).startMove();
+    drop(from: Cell, to: Cell): boolean {
+        if (from !== to && to.availible) {
+            this.board.changeFigures(from, to);
+            this.logger.logMove(from, to, to.figure);
+            this.board.clearAvailibles();
+            return true;
         }
         this.board.clearAvailibles();
+        return false;
     }
 }

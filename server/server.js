@@ -12,49 +12,54 @@ const rooms = {
 };
 
 io.on('connection', socket => {
-    console.log(`New user connected`);
-    sendRoomsInfo();
 
-    socket.on(`create room`, data => {
-        const roomId = randomStr(5);
-        rooms.free.push(roomId);
-        socket.join(roomId);
-        const roomsInfo = sendRoomsInfo();
-        io.in(roomId).emit('new room', { roomsInfo, roomId });
+    sendRoomsInfo(socket);
+
+    socket.on(`create room`, () => {
+        const room = {
+            id: randomStr(5),
+            players: [socket.id]
+        }
+        rooms.free.push(room);
+        socket.join(room.id);
+        sendRoomsInfo();
     });
 
     socket.on(`join room`, ({ roomId }) => {
-        const roomIndex = rooms.free.indexOf(roomId);
-        if (roomIndex > -1) {
-            rooms.free.splice(roomIndex, 1);
-            rooms.full.push(roomId);
-        }
-        sendRoomsInfo();
-        io.in(roomId).emit('starg game', { roomsInfo, roomId });
+        const room = rooms.free.filter((room, i) => {
+            if (room.id === roomId) {
+                socket.join(room.id);
+                room.players.push(socket.id);
+                rooms.free.splice(i, 1);
+                rooms.full.push(room);
+                return room;
+            }
+        })[0];
+        const roomsInfo = sendRoomsInfo();
+        const { players } = room;
+        console.log(rooms);
+        socket.to(room.id).emit('start game', { roomsInfo, roomId: room.id });
+        socket.broadcast.emit('add players', { isFirstTurn: true, players });
+        socket.emit('add players', { isFirstTurn: false, players });
     });
 
-    socket.on('send move', ({ board, roomId }) => {
-        const winner = null;
-        // checkWinner
-        const nextMoveInfo = { cellFrom, cellTo, winner };
-        if (!winner) {
-            socket.broadcast.to(roomId).emit('recieve move', nextMoveInfo);
-        } else {
-            io.in(roomId).emit('recieve move to winner', nextMoveInfo);
-        }
-    })
+    socket.on('send move', move => socket.broadcast.emit('recieve move', move));
 
     socket.on('disconnecting', () => {
-        const someRooms = Object.keys(socket.rooms);
-        console.log(someRooms);
-        const roomId = someRooms[1] || null;
-        if (roomId) {
-            roomIndex = rooms.full.indexOf(roomId);
-            if (roomIndex > -1) {
-                rooms.full.splice(roomIndex, 1);
-            }
-            io.in(roomId).emit('room disconnect', { id: socket.id, roomId })
-        }
+        const userRooms = Object.keys(socket.rooms).splice(1);
+        userRooms.forEach(roomId => {
+            rooms.free.concat(rooms.full)
+                .map((room, i) => {
+                    if (room.id === roomId) {
+                        io.in(roomId).emit('room disconnect', { id: socket.id, roomId })
+                        if (i > rooms.free.length - 1) {
+                            rooms.full.splice(i - rooms.free.length - 1, 1);
+                        } else {
+                            rooms.free.splice(i);
+                        }
+                    }
+                });
+        });
         sendRoomsInfo();
     });
 
@@ -76,16 +81,20 @@ io.on('connection', socket => {
 });
 
 const randomStr = (length = 15) => {
-    return Math.random().toString(36).substring(2, 2 + length / 2) + Math.random().toString(36).substring(2, 2 + length / 2);
+    return Math.random().toString(36).substring(2, 2 + length);
 }
 
-const sendRoomsInfo = () => {
+const sendRoomsInfo = (socket = null) => {
     const roomsInfo = {
-        roomsCount: rooms.free.length + rooms.full.length,
-        fullRooms: rooms.full,
-        emptyRooms: rooms.free
+        count: rooms.free.length + rooms.full.length,
+        full: rooms.full,
+        free: rooms.free
     };
-    io.emit(`rooms availible`, roomsInfo);
+    if (socket) {
+        socket.emit(`rooms availible`, roomsInfo);
+    } else {
+        io.emit(`rooms availible`, roomsInfo);
+    }
     return roomsInfo;
 }
 

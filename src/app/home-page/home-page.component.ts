@@ -11,23 +11,20 @@ export class HomePageComponent implements OnInit {
 
     private roomsCount = 0;
     private fullRooms: Array<string> = [];
-    private emptyRooms: Array<string> = [];
+    private freeRooms: Array<string> = [];
 
   constructor(private socketService: WebSocketService, private router: Router) { }
 
   ngOnInit(): void {
-    this.socketService.listen('start a new game').subscribe(({ roomId }) => {
+    this.socketService.listen('start game').subscribe(({ roomId }) => {
+      console.log(`123`);
       this.router.navigateByUrl(`/chess/${roomId}`);
     });
 
     this.socketService.listen('rooms availible').subscribe( roomsInfo => {
-        this.roomsCount = roomsInfo.roomsCount;
-        this.fullRooms = roomsInfo.fullRooms;
-        this.emptyRooms = roomsInfo.emptyRooms;
-    });
-
-    this.socketService.listen('new room').subscribe(({ roomsInfo, roomId }) => {
-
+        this.roomsCount = roomsInfo.count;
+        this.fullRooms = roomsInfo.full;
+        this.freeRooms = roomsInfo.free;
     });
   }
 
@@ -35,7 +32,13 @@ export class HomePageComponent implements OnInit {
     this.socketService.emit('join queue', { id : +Math.random().toString().slice(2, 5) });
   }
 
+  public joinRoom(roomId: string): void {
+    console.log(roomId);
+    this.socketService.emit('join room', { roomId });
+  }
+
   public createRoom(): void {
+    console.log(`1111`);
       this.socketService.emit('create room', {});
   }
 }
