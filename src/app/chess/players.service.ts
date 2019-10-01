@@ -40,17 +40,17 @@ export class PlayersService {
 
     private setFigures(player: Player) {
         const initialRow = player.color === `white` ? 7 : 0;
-        const secondRow = player.color === `white` ? -1 : 1;
-        this.board.entry[initialRow][0].figure = new Rook(player);
-        this.board.entry[initialRow][1].figure = new Knight(player);
-        this.board.entry[initialRow][2].figure = new Bishop(player);
-        this.board.entry[initialRow][3].figure = new King(player);
-        this.board.entry[initialRow][4].figure = new Queen(player);
-        this.board.entry[initialRow][5].figure = new Bishop(player);
-        this.board.entry[initialRow][6].figure = new Knight(player);
-        this.board.entry[initialRow][7].figure = new Rook(player);
-        this.board.entry[initialRow + secondRow].map((cell: Cell) => {
-            cell.figure = new Pawn(player);
+        const offset = player.color === `white` ? -1 : 1;
+        this.board.entry[initialRow][0].figure = new Rook(player, {x: 0, y: initialRow});
+        this.board.entry[initialRow][1].figure = new Knight(player, {x: 1, y: initialRow});
+        this.board.entry[initialRow][2].figure = new Bishop(player, {x: 2, y: initialRow});
+        this.board.entry[initialRow][3].figure = new King(player, {x: 3, y: initialRow});
+        this.board.entry[initialRow][4].figure = new Queen(player, {x: 4, y: initialRow});
+        this.board.entry[initialRow][5].figure = new Bishop(player, {x: 5, y: initialRow});
+        this.board.entry[initialRow][6].figure = new Knight(player, {x: 6, y: initialRow});
+        this.board.entry[initialRow][7].figure = new Rook(player, {x: 7, y: initialRow});
+        this.board.entry[initialRow + offset].map((cell: Cell, index: number) => {
+            cell.figure = new Pawn(player, {x: index, y: initialRow + offset});
         });
     }
 }

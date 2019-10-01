@@ -1,5 +1,10 @@
 import { Figure } from '../figure';
 
+export declare interface Coords {
+    x: number;
+    y: number;
+}
+
 export class Cell {
 
     private xLet: string;
@@ -53,7 +58,7 @@ export class Cell {
         return this.yLet;
     }
 
-    get coords() {
+    get coords(): Coords {
         return {x: this.x, y: this.y};
     }
 

@@ -1,4 +1,5 @@
 import { Figure } from '../figure';
+import { Cell } from '../cell';
 
 export class Player {
 

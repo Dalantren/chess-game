@@ -49,7 +49,9 @@ io.on('connection', socket => {
 
     socket.on('send board', ({roomId, board}) => {
         const room = rooms.full.filter(room => room.id === roomId)[0];
-        room.board = board;
+        if (room) {
+            room.board = board;
+        }
     });
 
     socket.on('disconnecting', () => {

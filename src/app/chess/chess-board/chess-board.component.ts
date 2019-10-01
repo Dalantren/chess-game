@@ -28,13 +28,6 @@ export class ChessBoardComponent implements OnInit {
     ) {
         this.board.initBoard();
         this.route.url.subscribe(url => this.roomId = url[1].path);
-
-        // this.socket.listen(`rooms availible`).subscribe(roomsInfo => {
-        //     const room = roomsInfo.full.concat(roomsInfo.free).filter(room => roomId === room.id)[0];
-        //     if (!room) {
-        //         this.router.navigateByUrl('/');
-        //     }
-        // });
     }
 
     ngOnInit() {
@@ -46,6 +39,7 @@ export class ChessBoardComponent implements OnInit {
             } else {
                 this.playersService.me = this.playersService.players[1];
             }
+            console.log(this.board);
         });
 
         this.socket.emit('send board', {roomId: this.roomId, board: this.board.entry });
@@ -66,7 +60,7 @@ export class ChessBoardComponent implements OnInit {
         if (!figure.player.canMove()) {
             return false;
         }
-        figure.setAvailibleMoves(cell, this.board);
+        figure.setAvailibleMoves(this.board);
     }
 
     makeMove(event: CdkDragDrop<Cell>) {
@@ -76,6 +70,9 @@ export class ChessBoardComponent implements OnInit {
             this.playersService.me.endMove();
             this.socket.emit('send move', { from: from.coords, to: to.coords, roomId: this.roomId });
             this.socket.emit('send board', {roomId: this.roomId, board: this.board.entry });
+            console.log(this.board);
+            console.log(from);
+            console.log(to);
         }
     }
 
