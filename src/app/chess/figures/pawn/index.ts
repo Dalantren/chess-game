@@ -1,19 +1,14 @@
-import { Figure } from '../../../core/figure';
-import { Player } from '../../../core/player';
-import { Coords } from '../../../core/cell';
-import { Board } from '../../../core/board';
-
+import { Figure, Coords, Player, Board, ChessColors as Colors, ChessFiguresIcons as Icons } from '../../../core';
 export class Pawn extends Figure {
 
-    constructor(public player: Player, public coords: Coords) {
-        super(player, coords);
-        this.icon = this.color === `white` ? `&#9817;` : `&#9823;`;
+    constructor(public color: Colors, public coords: Coords) {
+        super(color, coords);
+        this.icon = this.color === Colors.WHITE ? Icons.PAWN_W : Icons.PAWN_B ;
     }
 
     setAvailibleMoves(board: Board): void {
         const offset = this.firstMove ? 2 : 1;
-        const direction = this.color === 'white' ? -1 : 1;
-        console.log(board);
+        const direction = this.color === Colors.WHITE ? -1 : 1;
         for (let i = 1; i <= offset; i++) {
             for (let j = -1; j <= 1; j++) {
                 const x = this.coords.x + j;
@@ -22,7 +17,7 @@ export class Pawn extends Figure {
                     continue;
                 }
                 if (board.entry[y][x].figure && Math.abs(j) === 1 && Math.abs(i) === 1) {
-                    board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
+                    board.entry[y][x].availible = board.entry[y][x].figure.color !== this.color;
                     continue;
                 }
                 if (j === 0 && !board.entry[y][x].figure) {

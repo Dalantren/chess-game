@@ -59,7 +59,7 @@ export class Cell {
     }
 
     get coords(): Coords {
-        return {x: this.x, y: this.y};
+        return { x: this.x, y: this.y };
     }
 
     isBlack(): boolean {

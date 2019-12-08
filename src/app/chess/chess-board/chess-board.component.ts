@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 
-import { Cell } from './../../core/cell';
+import { Cell, Player } from './../../core';
 
-import { ChessBoardService } from '../chess-board.service';
-import { PlayersService } from '../players.service';
-import { LoggerService } from '../logger.service';
+import { ChessBoardService } from '../services/chess-board.service';
+import { PlayersService } from '../services/players.service';
+import { LoggerService } from '../services/logger.service';
 import { WebSocketService } from './../../web-socket.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'chess-board',
@@ -16,6 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ChessBoardComponent implements OnInit {
 
+    players: [Player, Player];
     private roomId: string;
 
     constructor(
@@ -23,7 +24,6 @@ export class ChessBoardComponent implements OnInit {
         private playersService: PlayersService,
         private logger: LoggerService,
         private socket: WebSocketService,
-        private router: Router,
         private route: ActivatedRoute
     ) {
         this.board.initBoard();
@@ -31,18 +31,7 @@ export class ChessBoardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.socket.listen('add players').subscribe(({ isFirstTurn, players }) => {
-            players.map((socketId: string) => this.playersService.add(socketId));
-            if (isFirstTurn) {
-                this.playersService.me = this.playersService.players[0];
-                this.playersService.me.startMove();
-            } else {
-                this.playersService.me = this.playersService.players[1];
-            }
-            console.log(this.board);
-        });
-
-        this.socket.emit('send board', {roomId: this.roomId, board: this.board.entry });
+        this.socket.emit('send board', { roomId: this.roomId, board: this.board.entry });
 
         this.socket.listen('recieve move').subscribe( ({ from, to }) => {
             const cellFrom = this.board.cell(from);
@@ -55,9 +44,9 @@ export class ChessBoardComponent implements OnInit {
     }
 
     setAvailibleMoves(event: CdkDragStart) {
-        const cell = event.source.dropContainer.data;
+        const cell: Cell = event.source.dropContainer.data;
         const { figure } = cell;
-        if (!figure.player.canMove()) {
+        if (!this.playersService.me.canMove() || figure.color !== this.playersService.me.color) {
             return false;
         }
         figure.setAvailibleMoves(this.board);
@@ -69,20 +58,21 @@ export class ChessBoardComponent implements OnInit {
         if (this.drop(from, to)) {
             this.playersService.me.endMove();
             this.socket.emit('send move', { from: from.coords, to: to.coords, roomId: this.roomId });
-            this.socket.emit('send board', {roomId: this.roomId, board: this.board.entry });
-            console.log(this.board);
-            console.log(from);
-            console.log(to);
+            this.socket.emit('send board', { roomId: this.roomId, board: this.board.entry });
         }
+        console.log(this.playersService.me);
     }
 
     drop(from: Cell, to: Cell): boolean {
-        if (from !== to && to.availible) {
-            this.board.changeFigures(from, to);
-            this.logger.logMove(from, to, to.figure);
+        if (to.availible) {
+            const { figure } = from;
+            this.board.makeMove(from, to);
+            this.logger.logMove(from, to);
+            figure.endMove();
             this.board.clearAvailibles();
             return true;
         }
+        console.log(this.playersService.me);
         this.board.clearAvailibles();
         return false;
     }

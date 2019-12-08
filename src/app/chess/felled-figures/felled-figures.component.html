@@ -1,0 +1,4 @@
+<div class="felled-figures">
+    <h3>{{ playersService.isMe(player) ? 'My' : 'Opponent' }} felled figures</h3>
+    <div class="felled-figures__single figure" *ngFor="let figure of player.felledFigures" innerHTML="{{ figure.icon }}"></div>
+</div>

@@ -1,13 +1,10 @@
-import { Figure } from '../../../core/figure';
-import { Coords } from '../../../core/cell';
-import { Player } from '../../../core/player';
-import { Board } from '../../../core/board';
+import { Figure, Coords, Player, Board, ChessColors as Colors, ChessFiguresIcons as Icons } from '../../../core';
 
 export class Knight extends Figure {
 
-    constructor(public player: Player, public coords: Coords) {
-        super(player, coords);
-        this.icon = this.color === `white` ? `&#9816;` : `&#9822;`;
+    constructor(public color: Colors, public coords: Coords) {
+        super(color, coords);
+        this.icon = this.color === Colors.WHITE ? Icons.KNIGHT_W : Icons.KNIGHT_B;
     }
 
     setAvailibleMoves(board: Board): void {
@@ -20,7 +17,7 @@ export class Knight extends Figure {
                 }
                 if ((Math.abs(j) === 2 && Math.abs(i) === 1) || (Math.abs(i) === 2 && Math.abs(j) === 1)) {
                     if (board.entry[y][x].figure) {
-                        board.entry[y][x].availible = board.entry[y][x].figure.player.id !== this.player.id;
+                        board.entry[y][x].availible = board.entry[y][x].figure.color !== this.color;
                         continue;
                     }
                     board.entry[y][x].availible = true;

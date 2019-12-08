@@ -17,7 +17,6 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.socketService.listen('start game').subscribe(({ roomId }) => {
-      console.log(`123`);
       this.router.navigateByUrl(`/chess/${roomId}`);
     });
 
@@ -29,7 +28,6 @@ export class HomePageComponent implements OnInit {
   }
 
   public joinRoom(roomId: string): void {
-    console.log(roomId);
     this.socketService.emit('join room', { roomId });
   }
 

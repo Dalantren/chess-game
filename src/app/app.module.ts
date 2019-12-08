@@ -5,7 +5,6 @@ import { ChessModule } from './chess/chess.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoggerComponent } from './chess/logger/logger.component';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

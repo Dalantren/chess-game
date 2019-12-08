@@ -18,7 +18,7 @@ io.on('connection', socket => {
     socket.on(`create room`, () => {
         const room = {
             id: randomStr(5),
-            players: [socket.id]
+            players: [{ id: socket.id, color: 'white' }]
         }
         rooms.free.push(room);
         socket.join(room.id);
@@ -26,23 +26,19 @@ io.on('connection', socket => {
     });
 
     socket.on(`join room`, ({ roomId }) => {
-        const room = rooms.free.filter((room, i) => {
-            if (room.id === roomId) {
-                room.players.push(socket.id);
-                rooms.free.splice(i, 1);
-                rooms.full.push(room);
-                return true;
-            }
-        })[0];
+        const room = rooms.free.find(room => room.id === roomId);
         if (!room) {
             return;
         }
+        room.players.push({ id: socket.id, color: 'black' });
+        rooms.free = rooms.free.filter(room => room.id !== roomId);
+        rooms.full.push(room);
         socket.join(room.id);
         sendRoomsInfo();
         const { players } = room;
         io.to(room.id).emit('start game', { roomId: room.id });
-        socket.to(room.id).broadcast.emit('add players', { isFirstTurn: true, players });
-        socket.emit('add players', { isFirstTurn: false, players });
+        io.to(room.id).emit('add players', { players });
+        // socket.emit('add players', { isFirstTurn: false, players });
     });
 
     socket.on('send move', ({from, to, roomId}) => socket.to(roomId).broadcast.emit('recieve move', {from, to}));

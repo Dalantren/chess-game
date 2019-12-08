@@ -1,7 +1,4 @@
-<div class="felled-figures">
-    <h3>Player One felled figures</h3>
-    <div class="felled-figures__single figure" *ngFor="let figure of playersService.players[0]?.felledFigures" innerHTML="{{ figure.icon }}"></div>
-</div>
+<!-- <felled-figures [player]="playersService.players[0]"></felled-figures> -->
 <div class="field" cdkDropListGroup>
     <div class="field__coord-row">
         <div class="field__coord-cell"></div>
@@ -41,7 +38,4 @@
         <div class="field__coord-cell"></div>
     </div>
 </div>
-<div class="felled-figures">
-    <h3>Player Two felled figures</h3>
-    <div class="felled-figures__single figure" *ngFor="let figure of playersService.players[1]?.felledFigures" innerHTML="{{ figure.icon }}"></div>
-</div>
+<!-- <felled-figures [player]="playersService.players[1]"></felled-figures> -->

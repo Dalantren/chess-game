@@ -17,7 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    // "esModuleInterop": true,
+    // "noImplicitAny": true,
+    // "paths": {
+    //     "*": [
+    //         "node_modules/*"
+    //     ]
+    // }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

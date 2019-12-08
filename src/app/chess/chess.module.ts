@@ -4,17 +4,19 @@ import { ChessBoardComponent } from './chess-board/chess-board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChessComponent } from './chess.component';
 import { LoggerComponent } from './logger/logger.component';
-import { PlayersService } from './players.service';
+import { PlayersService } from './services/players.service';
 import { WebSocketService } from '../web-socket.service';
-import { ChessBoardService } from './chess-board.service';
-import { LoggerService } from './logger.service';
+import { ChessBoardService } from './services/chess-board.service';
+import { LoggerService } from './services/logger.service';
+import { FelledFiguresComponent } from './felled-figures/felled-figures.component';
 
 
 @NgModule({
   declarations: [
     ChessBoardComponent,
     ChessComponent,
-    LoggerComponent
+    LoggerComponent,
+    FelledFiguresComponent
   ],
   imports: [
     CommonModule,

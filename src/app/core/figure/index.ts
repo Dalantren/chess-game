@@ -1,22 +1,39 @@
-import { Player } from '../player';
 import { Board } from '../board';
-import { Cell, Coords } from '../cell';
+import { Coords } from '../cell';
+import { ChessColors } from '../enums';
+import { ReplaySubject } from 'rxjs';
 
-export class Figure {
+export abstract class FiguresCreator {
+    public abstract create(name?: string, color?: ChessColors, coords?: Coords): Figure;
+}
 
-    public id: number;
+export interface Figure {
+    id: number;
+    icon: string;
+    color: ChessColors;
+    firstMove: boolean;
+    name: string;
+    coords: Coords;
+
+    setAvailibleMoves(board: Board): void;
+
+    chop(): void;
+
+    startMove(): void;
+    endMove(): void;
+}
+
+export class Figure implements Figure {
     public icon: string;
-    public color: 'black' | 'white';
     public firstMove = true;
-    public name = this.constructor.name;
-    public coords: Coords;
+    public name = this.constructor.name.toLowerCase();
+    public choped$ = new ReplaySubject(1);
 
-    constructor(public player: Player, coords: Coords) {
-        this.coords = coords;
-        this.color = this.player.color;
-        this.id = player.figures.length;
-        player.figures.push(this);
-    }
+    constructor(public color: ChessColors, public coords: Coords) { }
 
     public setAvailibleMoves(board: Board): void {}
+
+    public chop(): void { }
+
+    public endMove() { console.log(this) }
 }

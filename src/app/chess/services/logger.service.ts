@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Cell } from '../core/cell';
-import { Figure } from '../core/figure';
+import { Cell } from '../../core';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +13,8 @@ export class LoggerService {
         this.logs.push(message);
     }
 
-    public logMove(from: Cell, to: Cell, figure: Figure) {
-        this.logs.push(`${figure.icon} ${from.xLetter}${from.y} - ${to.xLetter}${to.y}`);
+    public logMove(from: Cell, to: Cell) {
+        this.logs.push(`${to.figure.icon} ${from.xLetter}${from.y} - ${to.xLetter}${to.y}`);
     }
 
 }
