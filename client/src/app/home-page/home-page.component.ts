@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { WebSocketService } from '../web-socket.service';
+import { SocketService } from '../socket.service';
 import { Router } from '@angular/router';
-import { EVENTS } from '../../socketEventsList'; 
+import { EVENTS } from '../../socketEventsList';
 
 @Component({
   selector: 'app-home-page',
@@ -14,7 +14,7 @@ export class HomePageComponent implements OnInit {
     private fullRooms: Array<string> = [];
     private freeRooms: Array<string> = [];
 
-  constructor(private socketService: WebSocketService, private router: Router) { }
+  constructor(private socketService: SocketService, private router: Router) { }
 
   ngOnInit(): void {
     this.socketService.listen(EVENTS.START_GAME).subscribe(({ roomId }) => {
@@ -29,10 +29,10 @@ export class HomePageComponent implements OnInit {
   }
 
   public joinRoom(roomId: string): void {
-    this.socketService.emit(EVENTS.JOIN_ROOM, { roomId });
+    this.socketService.send(EVENTS.JOIN_ROOM, { roomId });
   }
 
   public createRoom(): void {
-      this.socketService.emit(EVENTS.CREATE_ROOM, {});
+      this.socketService.send(EVENTS.CREATE_ROOM, {});
   }
 }
