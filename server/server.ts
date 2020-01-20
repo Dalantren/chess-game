@@ -1,8 +1,12 @@
 const Express = require('express')();
 const server = require('http').Server(Express);
-const io = require('socket.io')(server);
-import { EVENTS } from '../src/socketEventsList';
+require('socket.io')(server);
+const EVENTS = require('../src/socketEventsList');
+// import { EVENTS } from '../src/socketEventsList';
 
+console.log(EVENTS);
+
+/*
 const port = 3000;
 
 const queue = [];
@@ -78,7 +82,7 @@ function sendRoomsInfoTo(socket) {
     socket.emit(EVENTS.ROOMS_AVAILIBLE, getRoomsInfo());
 }
 
-function sendRoomsInfo() {
+function sendRoomsInfo(): void {
     io.emit(EVENTS.ROOMS_AVAILIBLE, getRoomsInfo());
 }
 
@@ -91,3 +95,4 @@ function getRoomsInfo() {
 }
 
 server.listen(port, () => console.log(`start listening port ${port}`));
+*/

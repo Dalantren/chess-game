@@ -20,7 +20,15 @@ export class Cell {
         this.y = y;
     }
 
-    public figure: Figure = null;
+    private _figure: Figure = null;
+
+    public get figure(): Figure {
+        return this._figure;
+    }
+
+    public set figure(fig: Figure) {
+        fig.coords = this.coords;
+    }
 
     get x() {
         return this.xNum;
@@ -62,7 +70,7 @@ export class Cell {
         return { x: this.x, y: this.y };
     }
 
-    isBlack(): boolean {
+    get isBlack(): boolean {
         return (this.x + this.y) % 2 === 0;
     }
 }

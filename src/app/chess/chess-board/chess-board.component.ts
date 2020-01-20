@@ -8,6 +8,7 @@ import { PlayersService } from '../services/players.service';
 import { LoggerService } from '../services/logger.service';
 import { WebSocketService } from './../../web-socket.service';
 import { ActivatedRoute } from '@angular/router';
+import { EVENTS } from '../../../socketEventsList';
 
 @Component({
     selector: 'chess-board',
@@ -31,9 +32,9 @@ export class ChessBoardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.socket.emit('send board', { roomId: this.roomId, board: this.board.entry });
+        this.socket.emit(EVENTS.SEND_BOARD, { roomId: this.roomId, board: this.board.entry });
 
-        this.socket.listen('recieve move').subscribe( ({ from, to }) => {
+        this.socket.listen(EVENTS.RECIEVE_MOVE).subscribe( ({ from, to }) => {
             const cellFrom = this.board.cell(from);
             const cellTo = this.board.cell(to);
             cellTo.availible = true;
@@ -57,8 +58,8 @@ export class ChessBoardComponent implements OnInit {
         const to: Cell = event.container.data;
         if (this.drop(from, to)) {
             this.playersService.me.endMove();
-            this.socket.emit('send move', { from: from.coords, to: to.coords, roomId: this.roomId });
-            this.socket.emit('send board', { roomId: this.roomId, board: this.board.entry });
+            this.socket.emit(EVENTS.SEND_MOVE, { from: from.coords, to: to.coords, roomId: this.roomId });
+            this.socket.emit(EVENTS.SEND_BOARD, { roomId: this.roomId, board: this.board.entry });
         }
         console.log(this.playersService.me);
     }

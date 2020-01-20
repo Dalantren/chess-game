@@ -35,5 +35,5 @@ export class Figure implements Figure {
 
     public chop(): void { }
 
-    public endMove() { console.log(this) }
+    public endMove() { console.log(this); }
 }

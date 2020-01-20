@@ -15,7 +15,7 @@
             *ngFor="let cell of row"
             [ngClass]="[
                 'field__cell',
-                cell.isBlack() ? 'field__cell--black' : 'field__cell--white',
+                cell.isBlack ? 'field__cell--black' : 'field__cell--white',
                 cell.availible ? 'field__cell--availible' : ''
             ]"
             cdkDropList

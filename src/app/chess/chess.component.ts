@@ -2,6 +2,7 @@ import { Component, OnInit  } from '@angular/core';
 import { WebSocketService } from '../web-socket.service';
 import { PlayersService } from './services/players.service';
 import { ChessColors } from '../core';
+import { EVENTS } from '../../../socketEventsList';
 
 @Component({
   selector: 'app-chess',
@@ -16,7 +17,7 @@ export class ChessComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-      this.socket.listen('add players').subscribe(({ id: roomId, players }) => {
+      this.socket.listen(EVENTS.ADD_PLAYERS).subscribe(({ id: roomId, players }) => {
         players.forEach(({ id, color }) => {
           const player = this.playersService.add(id, color);
           if (this.socket.socket.id === id) {
