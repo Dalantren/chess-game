@@ -1,5 +1,5 @@
 import * as express from "express";
-import { Server as HttpServer } from "http";
+import { createServer, Server as HttpServer } from "http";
 import * as socketIo from "socket.io";
 
 export class Server {
@@ -10,16 +10,16 @@ export class Server {
     private port: string | number;
 
     constructor() {
-        this.createApp();
-        this.config();
-        this.createServer();
-        this.sockets();
+        this.app = express.application;
+        this.port = process.env.PORT || Server.PORT;
+        this.server = createServer(this.app);
+        this.io = socketIo.default(this.server);
         this.start();
     }
 
     public start(): void {
         this.server.listen(this.port, () => {
-            // console.log("Running server on port %s", this.port);
+            console.log("Running server on port %s", this.port);
        });
     }
 
@@ -29,21 +29,5 @@ export class Server {
 
     public getSocket(): socketIo.Server {
       return this.io;
-    }
-
-    private createApp(): void {
-        this.app = express();
-    }
-
-    private createServer(): void {
-        this.server = new HttpServer(this.app);
-    }
-
-    private config(): void {
-        this.port = process.env.PORT || Server.PORT;
-    }
-
-    private sockets(): void {
-        this.io = socketIo(this.server);
     }
 }

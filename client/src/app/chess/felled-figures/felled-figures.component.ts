@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PlayersService } from '../services/players.service';
-import { Player } from 'src/app/core';
+import { Player } from '../../core/player';
 
 @Component({
   selector: 'felled-figures',
