@@ -17,7 +17,8 @@ export class ChessComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-      this.socket.listen(EVENTS.ADD_PLAYERS).subscribe(({ id: roomId, players }) => {
+      this.socket.listen(EVENTS.ADD_PLAYERS).subscribe(({ players }) => {
+        console.log(players);
         players.forEach(({ id, color }) => {
           const player = this.playersService.add(id, color);
           if (this.socket.getId() === id) {

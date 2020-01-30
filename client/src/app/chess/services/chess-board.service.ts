@@ -9,11 +9,8 @@ export class ChessBoardService extends Board {
     protected figuresCreator: FiguresCreator = new ChessFiguresCreator();
 
     public makeMove(from: Cell, to: Cell): void {
-        if (!to.figure || !from.figure) {
-            return;
-        }
-        if (from.figure.color !== to.figure.color) {
-            to.figure.choped$.next();
+        if (to.figure && from.figure && from.figure.color !== to.figure.color) {
+            to.figure.choped$.next(true);
         }
         from.figure.firstMove = false;
         to.figure = from.figure;

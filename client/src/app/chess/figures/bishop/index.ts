@@ -11,7 +11,7 @@ export class Bishop extends Figure {
         let x = this.coords.x + 1;
         let y = this.coords.y + 1;
         while (x < board.width && y < board.height) {
-            const cell: Cell = board.cell({x, y});
+            const cell: Cell = board.getCell({x, y});
             if (cell.figure) {
                 cell.availible = cell.figure.color !== this.color;
                 break;
@@ -23,7 +23,7 @@ export class Bishop extends Figure {
         x = this.coords.x - 1;
         y = this.coords.y + 1;
         while (x >= 0 && y < board.height) {
-            const cell: Cell = board.cell({x, y});
+            const cell: Cell = board.getCell({x, y});
             if (cell.figure) {
                 cell.availible = cell.figure.color !== this.color;
                 break;
@@ -35,7 +35,7 @@ export class Bishop extends Figure {
         x = this.coords.x + 1;
         y = this.coords.y - 1;
         while (x < board.width && y >= 0) {
-            const cell: Cell = board.cell({x, y});
+            const cell: Cell = board.getCell({x, y});
             if (cell.figure) {
                 cell.availible = cell.figure.color !== this.color;
                 break;
@@ -47,7 +47,7 @@ export class Bishop extends Figure {
         x = this.coords.x - 1;
         y = this.coords.y - 1;
         while (y >= 0 && x >= 0) {
-            const cell: Cell = board.cell({x, y});
+            const cell: Cell = board.getCell({x, y});
             if (cell.figure) {
                 cell.availible = cell.figure.color !== this.color;
                 break;

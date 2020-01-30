@@ -26,8 +26,11 @@ export class Cell {
         return this._figure;
     }
 
-    public set figure(fig: Figure) {
-        fig.coords = this.coords;
+    public set figure(fig: Figure | null) {
+        if (fig !== null) {
+            fig.coords = this.coords;
+        }
+        this._figure = fig;
     }
 
     get x() {

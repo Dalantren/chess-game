@@ -1,17 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { ChessModule } from './chess/chess.module';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material';
-import { HomePageComponent } from './home-page/home-page.component';
+import { RouterModule } from '@angular/router';
 
-const serverConfig: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
+import { ChessModule } from './chess/chess.module';
+import { AppComponent } from './app.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { routes } from './app-routes';
 
 @NgModule({
   declarations: [
@@ -19,9 +15,8 @@ const serverConfig: SocketIoConfig = { url: 'http://localhost:4444', options: {}
     HomePageComponent
   ],
   imports: [
-    SocketIoModule.forRoot(serverConfig),
     BrowserModule,
-    AppRoutingModule,
+    RouterModule.forRoot(routes),
     ChessModule,
     BrowserAnimationsModule,
     MatButtonModule

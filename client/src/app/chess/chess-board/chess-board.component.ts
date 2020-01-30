@@ -35,9 +35,10 @@ export class ChessBoardComponent implements OnInit {
         this.socket.send(EVENTS.SEND_BOARD, { roomId: this.roomId, board: this.board.entry });
 
         this.socket.listen(EVENTS.RECIEVE_MOVE).subscribe( ({ from, to }) => {
-            const cellFrom = this.board.cell(from);
-            const cellTo = this.board.cell(to);
+            const cellFrom = this.board.getCell(from);
+            const cellTo = this.board.getCell(to);
             cellTo.availible = true;
+            console.log(`recieved move`);
             if (this.drop(cellFrom, cellTo)) {
                 this.playersService.me.startMove();
             }

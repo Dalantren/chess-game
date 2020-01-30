@@ -15,7 +15,7 @@ export class King extends Figure {
                 if (x < 0 || y < 0 || x >= board.width || y >= board.height) {
                     continue;
                 }
-                const cell: Cell = board.cell({x, y});
+                const cell: Cell = board.getCell({x, y});
                 if (cell.figure) {
                     cell.availible = cell.figure.color !== this.color;
                     continue;
@@ -25,7 +25,7 @@ export class King extends Figure {
         }
         if (this.checkCastling(board)) {
             const firstRow = this.color === Colors.WHITE ? 7 : 0;
-            board.cell({x: 1, y: firstRow}).availible = true;
+            board.getCell({x: 1, y: firstRow}).availible = true;
         }
     }
 
@@ -33,9 +33,9 @@ export class King extends Figure {
         if (!this.firstMove) {
             return false;
         }
-        const bishop = board.cell({ x: this.coords.x - 1, y: this.coords.y }).figure;
-        const knight = board.cell({ x: this.coords.x - 2, y: this.coords.y }).figure;
-        const rook = board.cell({ x: this.coords.x - 3, y: this.coords.y }).figure;
+        const bishop = board.getCell({ x: this.coords.x - 1, y: this.coords.y }).figure;
+        const knight = board.getCell({ x: this.coords.x - 2, y: this.coords.y }).figure;
+        const rook = board.getCell({ x: this.coords.x - 3, y: this.coords.y }).figure;
         const secondRow = this.color === Colors.WHITE ? board.height - 2 : 1;
 
         if (!(bishop.name === 'bishop' && bishop.firstMove) ||
@@ -45,7 +45,7 @@ export class King extends Figure {
             return false;
         }
         for (let i = 0; i <= 2; i++) {
-            const pawn = board.cell({ x: i, y: secondRow}).figure;
+            const pawn = board.getCell({ x: i, y: secondRow}).figure;
             if (!(pawn.name !== 'Pawn' || pawn.firstMove)) {
                 return false;
             }

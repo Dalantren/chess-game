@@ -14,7 +14,7 @@ export class LoggerService {
     }
 
     public logMove(from: Cell, to: Cell) {
-        this.logs.push(`${to.figure.icon} ${from.xLetter}${from.y} - ${to.xLetter}${to.y}`);
+        this.logs.push(`${to.figure.icon} ${from.xLetter}${from.y + 1} - ${to.xLetter}${to.y + 1}`);
     }
 
 }

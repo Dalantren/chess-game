@@ -23,7 +23,6 @@ const rooms: { free: IRoom[], full: IRoom[] } = {
 };
 
 io.on(EVENTS.CONNECT, (socket: Socket) => {
-
     sendRoomsInfoTo(socket);
 
     socket.on(EVENTS.CREATE_ROOM, () => {
@@ -37,7 +36,7 @@ io.on(EVENTS.CONNECT, (socket: Socket) => {
     });
 
     socket.on(EVENTS.JOIN_ROOM, ({ roomId }) => {
-        const joinedRoom = rooms.free.find((r) => r.id === roomId);
+        const joinedRoom = rooms.free.find((room) => room.id === roomId);
         if (!joinedRoom) {
             return;
         }
@@ -56,7 +55,7 @@ io.on(EVENTS.CONNECT, (socket: Socket) => {
         ({from, to, roomId}) => socket.to(roomId).broadcast.emit(EVENTS.RECIEVE_MOVE, {from, to}));
 
     socket.on(EVENTS.SEND_BOARD, ({roomId, board}) => {
-        const room = rooms.full.filter((r) => r.id === roomId)[0];
+        const room = rooms.full.find((r) => r.id === roomId);
         if (room) {
             room.board = board;
         }

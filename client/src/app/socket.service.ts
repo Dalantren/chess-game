@@ -21,7 +21,7 @@ export class SocketService {
 
   public listen(eventName: string): Observable<any> {
     return new Observable(subscriber => {
-      this.socket.on(eventName, (data: any) => subscriber.next(data));
+      this.socket.on(eventName, ((data: any) => subscriber.next(data)));
     });
   }
 
